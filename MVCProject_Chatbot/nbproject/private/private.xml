@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/IOFormat.java</file>
+            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/ChatBotViewer.java</file>
+            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/responses</file>
+            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/MVCProject_Chatbot.java</file>
+            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/ChatBotController.java</file>
             <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/ChatBotModel.java</file>
-            <file>file:/home/brandon/NetBeansProjects/MVCProject_Chatbot/src/mvcproject_chatbot/output</file>
         </group>
     </open-files>
 </project-private>

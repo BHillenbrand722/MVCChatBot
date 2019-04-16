@@ -1,87 +1,79 @@
 package mvcproject_chatbot;
 
-import javax.swing.JTextArea;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.text.DefaultCaret;
 
 public class ChatBotViewer extends JFrame{
     
-    private JTextArea userInput = new JTextArea(2,56);
-    private JEditorPane messageOutput = new JEditorPane();
-    String input = "";
-    String output = "";
-    private JPanel chat;
-    private JPanel userIn;
-    private JPanel buttonPanel;
-    private final ChatBotController cbc;
+    private JTextField userText = new JTextField();
+    private JTextArea readArea = new JTextArea();
+    
+    private String input = null;
+    private String output = null;
+      
+    private ChatBotController cbc;
     
     public ChatBotViewer(ChatBotController cbc) throws FileNotFoundException{
-       this.cbc = cbc;
-       initialize();
-       setFieldView();
+        this.cbc = cbc;
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(600,600);
+        this.setVisible(true);
+        this.setLayout(null);
+        this.setResizable(false);
+        this.setTitle("MVC Chatbot");
+        
+        userText.setSize(590,30);
+        userText.setLocation(2,540);
+        userText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = userText.getText();
+                readArea.append("You: " + text + "\n");
+                userText.setText("");
+                input = text;
+                try {
+                    respond();
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File Not Found.");
+                }
+            }
+        });
+        
+        readArea.setSize(560,510);
+        readArea.setLocation(20,5);
+        readArea.setEditable(false);
+        readArea.setLineWrap(true);
+        readArea.setWrapStyleWord(true);
+        
+        //JScrollPane scroll = new JScrollPane(readArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+               
+        this.add(userText);
+        this.add(readArea);
+        
         
     }
     
-    private void initialize() throws FileNotFoundException{
-        setTitle("Chat Bot");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
-
-        chat = new JPanel();
-        chat.add(new JLabel("Message History"));
-        messageOutput.setPreferredSize(new Dimension(700,500));
-        messageOutput.setEditable(false);
-        chat.add(messageOutput);
-        
-        userIn = new JPanel();
-        userIn.add(new JLabel("User Input"));
-        userIn.add(userInput);
-        
-        buttonPanel = new JPanel(new BorderLayout());
-        JButton enterButton = new JButton("Enter");
-        enterButton.addActionListener(event -> {
-            try {
-                update(userInput.getText());
-            } catch (FileNotFoundException ex) {
-                System.out.println("File Not Found");
-            }
-        });
-        buttonPanel.add(enterButton);
-        
-        setContentPane(new JPanel(new BorderLayout()));
-        getContentPane().add(chat, BorderLayout.PAGE_START);
-        getContentPane().add(userIn,BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
-        
-        
-    }
-    public void update(String input) throws FileNotFoundException{
-        this.input = input;
-        this.output = cbc.getOutput();
-        setFieldView();
-    }
     public String getInput(){
         return this.input;
     }
-    private void setFieldView(){
-        if(messageOutput.equals("")){
-            messageOutput.setText(input + "\n" + output);
-        }
-        else{
-            messageOutput.setText(messageOutput.getText() + "\n" + input + "\n" +output);
-        }      
-        userInput.setText("");
+    public void setOutput(String output){
+        this.output = output;
+    }
+    
+    public void refreshOutput() throws FileNotFoundException{
+        this.output = cbc.getOutput();
+    }
+    public void respond() throws FileNotFoundException{
+        refreshOutput();
+        readArea.append("AI: " + this.output + "\n");
     }
 }

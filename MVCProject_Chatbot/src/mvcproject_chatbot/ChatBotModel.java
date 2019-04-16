@@ -6,24 +6,33 @@ import java.util.Random;
 
 public class ChatBotModel {
     
-    ArrayList<String> tempResponses = new ArrayList();
-    String input;
-    String output;
+    private ArrayList<String> responses = new ArrayList();
+    private String input;
+    private String output;
     
     public ChatBotModel(String input){
         this.input = input;
     }
     
-    public String getResponses() throws FileNotFoundException{
+    public void loadResponses() throws FileNotFoundException{
         String path = System.getProperty("user.dir");
-        System.out.println(path + "/output");
-        File file = new File(path + "/output");
-        Scanner sc = new Scanner(file);
-        Random rand = new Random();
-        for(int i = -1; i < rand.nextInt(12); i++){
-            output = sc.nextLine();
+        //System.out.println(path + "/responses");
+        File file = new File(path + "/responses");
+        System.out.println("Loading...");
+        for(Scanner sc = new Scanner(file); sc.hasNext(); ){
+           String[] temp = sc.nextLine().split("~"); 
+           responses.add(temp[4]);
+           
         }
-        return output;
+        System.out.println("Loading Complete!");
+    }
+    
+    public String getResponse(){
+        Random rand = new Random();
+        int pick = rand.nextInt(304713);
+        //System.out.println(responses.get(pick) + pick);
+        this.output = responses.get(pick);
+        return responses.get(pick);
     }
     
     public static String choose(File file) throws FileNotFoundException{
@@ -39,7 +48,5 @@ public class ChatBotModel {
         }
         return result;
     }
-    
-    
     
 }
